@@ -1,0 +1,46 @@
+{
+  "name": "filmotheque-back",
+  "version": "1.0.0",
+  "description": "Movie library",
+  "main": "app.js",
+  "author": "macolmenerori",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/macolmenerori/filmotheque-back"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0 <21.0.0"
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/server.js",
+    "prettify": "prettier -w --log-level=silent src/",
+    "lint": "eslint --fix .",
+    "types": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "verify": "yarn audit --groups dependencies && yarn lint && yarn prettify && yarn types && yarn build"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.9.0",
+    "@typescript-eslint/eslint-plugin": "^8.13.0",
+    "@typescript-eslint/parser": "^8.13.0",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "prettier": "^3.3.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
