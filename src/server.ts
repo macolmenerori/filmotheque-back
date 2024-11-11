@@ -1,13 +1,32 @@
+/* eslint-disable no-console */
 import dotenv from 'dotenv';
 dotenv.config({ path: './config.env' });
 
+import mongoose from 'mongoose';
+
 import app from './app';
+
+// TODO: check env vars
 
 process.on('uncaughtException', (err: Error) => {
   console.log(err.name, err.message);
   console.log('UNCAUGHT EXCEPTION! Shutting down...');
   process.exit(1);
 });
+
+// Connect to DB
+if (!process.env.DATABASE) {
+  console.log('No database found');
+  process.exit(1);
+}
+
+mongoose
+  .connect(process.env.DATABASE, {
+    // useNewUrlParser: true,
+    // useCreateIndex: true,
+    // useFindAndModify: false
+  })
+  .then(() => console.log('DB connection successful!'));
 
 const port = process.env.PORT || 8080;
 
