@@ -1,5 +1,6 @@
 import type { NextFunction, Request as RequestExpress, Response } from 'express';
 
+import Movie from '../models/moviesModel';
 import { MovieSearchTrakt } from '../models/moviesTypes';
 import { UserType } from '../models/userTypes';
 import catchAsync from '../utils/catchAsync';
@@ -42,6 +43,23 @@ export const searchTraktMovieByTitle = catchAsync(async (req: Request, res: Resp
     status: 'success',
     message: 'Movies retrieved',
     movies: movies
+  });
+});
+
+export const addMovieToCollection = catchAsync(async (req: Request, res: Response) => {
+  // TODO: validation on POST body
+  // const validation = checkValidation(req, res);
+  // if (validation !== undefined) {
+  //   return validation;
+  // }
+  const newMovie = await Movie.create(req.body);
+
+  return res.status(201).json({
+    status: 'success',
+    message: 'Movie added to collection',
+    data: {
+      movie: newMovie
+    }
   });
 });
 

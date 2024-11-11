@@ -9,7 +9,8 @@ const movieSchema: Schema = new mongoose.Schema({
   },
   id: {
     type: String,
-    required: [true, 'A movie must have an id']
+    required: [true, 'A movie must have an id'],
+    unique: true
   },
   title: {
     type: String,
@@ -42,6 +43,9 @@ const movieSchema: Schema = new mongoose.Schema({
   backupDate: {
     type: String,
     default: ''
+  },
+  meta_ids: {
+    type: Object
   }
 });
 

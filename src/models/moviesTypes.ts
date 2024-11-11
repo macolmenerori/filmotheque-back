@@ -1,6 +1,6 @@
 import { Document, Schema } from 'mongoose';
 
-export type MovieType = Document & {
+export type Movie = {
   user: string;
   id: string;
   title: string;
@@ -11,7 +11,10 @@ export type MovieType = Document & {
   watched: boolean;
   backedUp: boolean;
   backupDate: string;
+  meta_ids: Record<string, string | number>;
 };
+
+export type MovieType = Document & Movie;
 
 export type UserSchemaType = MovieType & Schema;
 
