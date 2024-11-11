@@ -63,6 +63,37 @@ export const addMovieToCollection = catchAsync(async (req: Request, res: Respons
   });
 });
 
+export const deleteMovieFromCollection = catchAsync(async (req: Request, res: Response) => {
+  const id = req.query.id as string;
+
+  // TODO: check validation
+  //   const validation = checkValidation(req, res);
+  //   if (validation !== undefined) {
+  //     return validation;
+  //   }
+
+  if (!id) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Please provide an id and a user'
+    });
+  }
+
+  const movieToDelete = await Movie.findOneAndDelete({ id, user: req.user?.email });
+
+  if (!movieToDelete) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Movie not found on library'
+    });
+  }
+
+  return res.status(204).json({
+    status: 'success',
+    message: 'Movie deleted from collection'
+  });
+});
+
 // Middleware to allow only logged in users to access certain routes
 export const protect = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   // 1) Getting token and check if it's there
