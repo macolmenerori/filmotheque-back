@@ -1,6 +1,11 @@
 import express from 'express';
 
-import { protect, searchTraktMovieByTitle } from '../controllers/moviesController';
+import {
+  addMovieToCollection,
+  deleteMovieFromCollection,
+  protect,
+  searchTraktMovieByTitle
+} from '../controllers/moviesController';
 import { methodNotAllowed } from '../utils/methodNotAllowed';
 
 const router = express.Router();
@@ -14,5 +19,9 @@ const router = express.Router();
 
 router.route('/searchmovie').get(protect, searchTraktMovieByTitle);
 //.all(methodNotAllowed(['GET']));
+router
+  .route('/movie')
+  .post(protect, addMovieToCollection)
+  .delete(protect, deleteMovieFromCollection); // TODO: validation on POST body
 
 export default router;

@@ -1,5 +1,7 @@
 import type { NextFunction, Request as RequestExpress, Response } from 'express';
 
+import Movie from '../models/moviesModel';
+import { MovieSearchTrakt } from '../models/moviesTypes';
 import { UserType } from '../models/userTypes';
 import catchAsync from '../utils/catchAsync';
 
@@ -10,13 +12,85 @@ type Request = RequestExpress & {
 export const searchTraktMovieByTitle = catchAsync(async (req: Request, res: Response) => {
   const { title } = req.query;
 
-  // TODO:
-  console.log('USER', req.user);
+  const traktRes = await fetch(`${process.env.TRAKT_API_URL}/search/movie?query=${title}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'trakt-api-version': '2',
+      'trakt-api-key': `${process.env.TRAKT_CLIENT_ID}`
+    }
+  });
+
+  if (traktRes.status !== 200) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Something went wrong. Please try again later.'
+    });
+  }
+
+  const parsedResults = (await traktRes.json()) as MovieSearchTrakt[];
+
+  if (parsedResults.length === 0) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'No movies found with that title'
+    });
+  }
+
+  // Get only the first 5 results
+  const movies = parsedResults.map((movie: MovieSearchTrakt) => movie.movie).slice(0, 5);
 
   return res.status(200).json({
     status: 'success',
-    message: 'Search movie by title route',
-    title
+    message: 'Movies retrieved',
+    movies: movies
+  });
+});
+
+export const addMovieToCollection = catchAsync(async (req: Request, res: Response) => {
+  // TODO: validation on POST body
+  // const validation = checkValidation(req, res);
+  // if (validation !== undefined) {
+  //   return validation;
+  // }
+  const newMovie = await Movie.create(req.body);
+
+  return res.status(201).json({
+    status: 'success',
+    message: 'Movie added to collection',
+    data: {
+      movie: newMovie
+    }
+  });
+});
+
+export const deleteMovieFromCollection = catchAsync(async (req: Request, res: Response) => {
+  const id = req.query.id as string;
+
+  // TODO: check validation
+  //   const validation = checkValidation(req, res);
+  //   if (validation !== undefined) {
+  //     return validation;
+  //   }
+
+  if (!id) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Please provide an id and a user'
+    });
+  }
+
+  const movieToDelete = await Movie.findOneAndDelete({ id, user: req.user?.email });
+
+  if (!movieToDelete) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Movie not found on library'
+    });
+  }
+
+  return res.status(204).json({
+    status: 'success',
+    message: 'Movie deleted from collection'
   });
 });
 
