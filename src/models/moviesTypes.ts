@@ -14,3 +14,15 @@ export type MovieType = Document & {
 };
 
 export type UserSchemaType = MovieType & Schema;
+
+export type TraktMovie = {
+  title: string;
+  year: number;
+  ids: Record<string, string | number>;
+};
+
+export type MovieSearchTrakt = {
+  type: string;
+  score: number;
+  movie: TraktMovie;
+};
