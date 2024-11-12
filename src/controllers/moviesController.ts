@@ -1,4 +1,5 @@
 import type { NextFunction, Request as RequestExpress, Response } from 'express';
+import fs from 'fs';
 
 import Movie from '../models/moviesModel';
 import { MovieSearchTrakt } from '../models/moviesTypes';
@@ -203,6 +204,50 @@ export const exportUserData = catchAsync(async (req: Request, res: Response) => 
 
   res.write(']'); // Close JSON array
   res.end();
+});
+
+export const importUserData = catchAsync(async (req: Request, res: Response) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+
+  if (req.file.mimetype !== 'application/json') {
+    return res.status(400).json({ error: 'Uploaded file is not a JSON file' });
+  }
+
+  // Read and parse the JSON file
+  const filePath = req.file.path;
+  const fileData = await fs.promises.readFile(filePath, 'utf-8');
+  const userData = JSON.parse(fileData) as MovieType[]; // Type assertion for TypeScript
+
+  // Validate each item in the JSON array
+  if (
+    !Array.isArray(userData) ||
+    userData.some(
+      (doc) =>
+        !doc.user ||
+        !doc.id ||
+        !doc.title ||
+        typeof doc.year !== 'number' ||
+        typeof doc.length !== 'number' ||
+        !doc.media ||
+        typeof doc.size !== 'number' ||
+        typeof doc.watched !== 'boolean' ||
+        typeof doc.backedUp !== 'boolean' ||
+        !doc.backupDate ||
+        typeof doc.meta_ids !== 'object'
+    )
+  ) {
+    return res.status(400).json({ error: 'Invalid JSON structure' });
+  }
+
+  // Insert into DB
+  await Movie.insertMany(userData);
+
+  // Cleanup the uploaded file
+  await fs.promises.unlink(filePath);
+
+  return res.status(200).json({ status: 'success', message: 'Data imported successfully' });
 });
 
 // Middleware to allow only logged in users to access certain routes
