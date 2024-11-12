@@ -94,6 +94,65 @@ export const deleteMovieFromCollection = catchAsync(async (req: Request, res: Re
   });
 });
 
+export const getAllMovies = catchAsync(async (req: Request, res: Response) => {
+  const page = Number(req.query.page) || 1;
+  const perpage = Number(req.query.perpage) || 10;
+
+  // Calculate the number of movies to skip
+  const skip = (page - 1) * perpage;
+
+  // Retrieve the movies from the database of a specific user
+  const movies = await Movie.find({ user: req.user?.email }).skip(skip).limit(perpage);
+
+  // Count the total number of movies for metadata
+  const totalMovies = await Movie.countDocuments({ user: req.user?.email });
+
+  return res.status(200).json({
+    status: 'success',
+    message: 'Movies retrieved',
+    data: {
+      movies
+    },
+    pagination: {
+      totalCount: totalMovies,
+      currentPage: page,
+      totalPages: Math.ceil(totalMovies / perpage)
+    }
+  });
+});
+
+export const updateMovie = catchAsync(async (req: Request, res: Response) => {
+  // TODO: validation
+  //   const validation = checkValidation(req, res);
+  //   if (validation !== undefined) {
+  //     return validation;
+  //   }
+
+  const movieId = req.body.id as string;
+  delete req.body.id;
+
+  const updatedMovie = await Movie.findOneAndUpdate(
+    { user: req.user?.email, id: movieId },
+    { ...req.body },
+    { new: true, runValidators: true }
+  );
+
+  if (!updatedMovie) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Movie not found'
+    });
+  }
+
+  return res.status(200).json({
+    status: 'success',
+    message: 'Movie updated',
+    data: {
+      movie: updatedMovie
+    }
+  });
+});
+
 // Middleware to allow only logged in users to access certain routes
 export const protect = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   // 1) Getting token and check if it's there

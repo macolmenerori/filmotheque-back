@@ -3,8 +3,10 @@ import express from 'express';
 import {
   addMovieToCollection,
   deleteMovieFromCollection,
+  getAllMovies,
   protect,
-  searchTraktMovieByTitle
+  searchTraktMovieByTitle,
+  updateMovie
 } from '../controllers/moviesController';
 import { methodNotAllowed } from '../utils/methodNotAllowed';
 
@@ -21,7 +23,9 @@ router.route('/searchmovie').get(protect, searchTraktMovieByTitle);
 //.all(methodNotAllowed(['GET']));
 router
   .route('/movie')
+  .get(protect, getAllMovies)
   .post(protect, addMovieToCollection)
+  .patch(protect, updateMovie)
   .delete(protect, deleteMovieFromCollection); // TODO: validation on POST body
 
 export default router;
