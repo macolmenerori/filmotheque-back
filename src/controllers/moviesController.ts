@@ -2,6 +2,7 @@ import type { NextFunction, Request as RequestExpress, Response } from 'express'
 
 import Movie from '../models/moviesModel';
 import { MovieSearchTrakt } from '../models/moviesTypes';
+import { Movie as MovieType } from '../models/moviesTypes';
 import { UserType } from '../models/userTypes';
 import catchAsync from '../utils/catchAsync';
 
@@ -179,6 +180,29 @@ export const getFullMovie = catchAsync(async (req: Request, res: Response) => {
       movie: fullMovie
     }
   });
+});
+
+export const exportUserData = catchAsync(async (req: Request, res: Response) => {
+  const user = req.user?.email;
+
+  // Create an streaming of the data
+  res.setHeader('Content-Disposition', `attachment; filename=export-${user?.split('@')[0]}.json`);
+  res.setHeader('Content-Type', 'application/json');
+
+  const cursor = await Movie.find({ user });
+  res.write('[');
+
+  let isFirst = true;
+  cursor.forEach((doc) => {
+    if (!isFirst) {
+      res.write(','); // Add comma between documents
+    }
+    res.write(JSON.stringify(doc));
+    isFirst = false;
+  });
+
+  res.write(']'); // Close JSON array
+  res.end();
 });
 
 // Middleware to allow only logged in users to access certain routes

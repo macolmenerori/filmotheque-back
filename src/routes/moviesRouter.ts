@@ -3,6 +3,7 @@ import express from 'express';
 import {
   addMovieToCollection,
   deleteMovieFromCollection,
+  exportUserData,
   getAllMovies,
   getFullMovie,
   protect,
@@ -30,5 +31,7 @@ router
   .delete(protect, deleteMovieFromCollection); // TODO: validation on POST body
 
 router.route('/fullmovie').get(protect, getFullMovie);
+
+router.route('/exportuserdata').get(protect, exportUserData);
 
 export default router;
