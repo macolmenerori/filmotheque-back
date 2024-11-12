@@ -153,6 +153,34 @@ export const updateMovie = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+export const getFullMovie = catchAsync(async (req: Request, res: Response) => {
+  const id = req.query.id as string;
+
+  if (!id) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Please provide an id'
+    });
+  }
+
+  const fullMovie = await Movie.findOne({ id, user: req.user?.email });
+
+  if (!fullMovie) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Movie not found'
+    });
+  }
+
+  return res.status(200).json({
+    status: 'success',
+    message: 'Movie retrieved',
+    data: {
+      movie: fullMovie
+    }
+  });
+});
+
 // Middleware to allow only logged in users to access certain routes
 export const protect = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   // 1) Getting token and check if it's there

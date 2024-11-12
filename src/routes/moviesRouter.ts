@@ -4,6 +4,7 @@ import {
   addMovieToCollection,
   deleteMovieFromCollection,
   getAllMovies,
+  getFullMovie,
   protect,
   searchTraktMovieByTitle,
   updateMovie
@@ -27,5 +28,7 @@ router
   .post(protect, addMovieToCollection)
   .patch(protect, updateMovie)
   .delete(protect, deleteMovieFromCollection); // TODO: validation on POST body
+
+router.route('/fullmovie').get(protect, getFullMovie);
 
 export default router;
