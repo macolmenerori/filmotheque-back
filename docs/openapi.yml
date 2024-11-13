@@ -1,0 +1,489 @@
+openapi: '3.0.0'
+info:
+  version: '1.0.0'
+  title: 'filmotheque'
+  description: Personal movie library
+servers:
+  - url: http://localhost:8081/api/v1
+tags:
+  - name: movies
+    description: Manage movies
+
+paths:
+  /movies/searchmovie:
+    get:
+      tags:
+        - movies
+      security:
+        - bearerAuth: []
+        - cookiesAuth: []
+      summary: Search for movie on Trakt
+      description: Search movie results in Trakt
+      operationId: searchMovieTrakt
+      parameters:
+        - in: query
+          name: title
+          schema:
+            type: string
+            example: Goodfellas
+          required: true
+          description: Movie title
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Movies retrieved
+                  movies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/movieSchema'
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorizedSchema'
+        404:
+          description: No movies found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: No movies found with that title
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/internalServerErrorSchema'
+
+  /movies/movie:
+    post:
+      tags:
+        - movies
+      security:
+        - bearerAuth: []
+        - cookiesAuth: []
+      summary: Add movie to library
+      description: Add movie to library
+      operationId: addMovie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/movieSchema'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Movie added
+                  movie:
+                    $ref: '#/components/schemas/movieSchema'
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorizedSchema'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/internalServerErrorSchema'
+    delete:
+      tags:
+        - movies
+      security:
+        - bearerAuth: []
+        - cookiesAuth: []
+      summary: Delete movie from library
+      description: Delete movie from library
+      operationId: deleteMovie
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+            example: 1234
+          required: true
+          description: Movie id
+      responses:
+        204:
+          description: Successful operation
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorizedSchema'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/internalServerErrorSchema'
+    get:
+      tags:
+        - movies
+      security:
+        - bearerAuth: []
+        - cookiesAuth: []
+      summary: Get all movies of a user
+      description: Get all movies of a user
+      operationId: getMovie
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Movie retrieved
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/movieSchema'
+                  pagination:
+                    $ref: '#/components/schemas/paginationSchema'
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorizedSchema'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/internalServerErrorSchema'
+    patch:
+      tags:
+        - movies
+      security:
+        - bearerAuth: []
+        - cookiesAuth: []
+      summary: Update movie in library
+      description: Update movie in library
+      operationId: updateMovie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/movieSchema'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Movie updated
+                  movie:
+                    $ref: '#/components/schemas/movieSchema'
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorizedSchema'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/internalServerErrorSchema'
+  /movie/fullmovie:
+    get:
+      tags:
+        - movies
+      security:
+        - bearerAuth: []
+        - cookiesAuth: []
+      summary: Get full movie details
+      description: Get full movie details
+      operationId: getFullMovie
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+            example: 1234
+          required: true
+          description: Movie id
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Movie retrieved
+                  movie:
+                    $ref: '#/components/schemas/movieSchema'
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorizedSchema'
+        404:
+          description: Movie not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: Movie not found
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/internalServerErrorSchema'
+  /movies/exportuserdata:
+    get:
+      tags:
+        - movies
+      security:
+        - bearerAuth: []
+        - cookiesAuth: []
+      summary: Export user data
+      description: Export user data
+      operationId: exportUserData
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: User data exported
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/movieSchema'
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorizedSchema'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/internalServerErrorSchema'
+  /movies/importuserdata:
+    post:
+      tags:
+        - movies
+      security:
+        - bearerAuth: []
+        - cookiesAuth: []
+      summary: Import user data
+      description: Import user data
+      operationId: importUserData
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/movieSchema'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: User data imported
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorizedSchema'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/internalServerErrorSchema'
+
+components:
+  schemas:
+    movieSchema:
+      type: object
+      properties:
+        movie:
+          type: object
+          properties:
+            user:
+              type: string
+              example: user@user.com
+            id:
+              type: string
+              example: 1234
+            title:
+              type: string
+              example: GoodFellas
+            year:
+              type: number
+              example: 1990
+            length:
+              type: number
+              example: 224
+            media:
+              type: array
+              example: ['Blu-Ray', 'DVD', 'digital']
+            size:
+              type: number
+              example: 5.83
+            watched:
+              type: boolean
+              example: true
+            backedUp:
+              type: boolean
+              example: true
+            backupDate:
+              type: string
+              example: '2024-10-15T17:13:39.796+00:00'
+            meta_ids:
+              type: object
+              properties:
+                schema:
+                  $ref: '#/components/schemas/metaIdsSchema'
+    metaIdsSchema:
+      type: object
+      properties:
+        slug:
+          type: string
+          example: goodfellas-1990
+        imdb:
+          type: string
+          example: tt0099685
+        tmdb:
+          type: string
+          example: 769
+        trakt:
+          type: number
+          example: 612
+    movieTraktSchema:
+      type: object
+      properties:
+        title:
+          type: string
+          example: GoodFellas
+        year:
+          type: number
+          example: 1990
+        ids:
+          type: object
+          properties:
+            schema:
+              $ref: '#/components/schemas/metaIdsSchema'
+    unauthorizedSchema:
+      type: object
+      properties:
+        status:
+          type: string
+          example: fail
+        message:
+          type: string
+          example: You are not logged in! Please log in to get access.
+    internalServerErrorSchema:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          example: Something went wrong. Please try again later.
+    paginationSchema:
+      type: object
+      properties:
+        totalCount:
+          type: number
+          example: 20
+        currentPage:
+          type: number
+          example: 1
+        totalPages:
+          type: number
+          example: 3
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: jwt
