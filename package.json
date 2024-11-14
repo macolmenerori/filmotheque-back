@@ -20,7 +20,8 @@
     "lint": "eslint --fix .",
     "types": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "verify": "yarn audit --groups dependencies && yarn lint && yarn prettify && yarn types && yarn build"
+    "verify": "yarn audit --groups dependencies && yarn lint && yarn prettify && yarn types && yarn build",
+    "gitleaks": "sh scripts/gitleaks"
   },
   "dependencies": {
     "compression": "^1.7.5",
@@ -53,6 +54,7 @@
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "husky": "^9.1.6",
     "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
