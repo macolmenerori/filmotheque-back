@@ -14,7 +14,7 @@ const app = express();
 // TODO: add rate limit
 
 // Middleware, modifies incoming data. For parsing JSON bodies on POST requests
-app.use(express.json({ limit: '10kb' })); // Do not accept bodies bigger than 10 kilobytes
+app.use(express.json({ limit: '1024kb' })); // Do not accept bodies bigger than 1 megabyte
 
 // Middleware, modifies incoming data. For parsing URL encoded forms
 app.use(express.urlencoded({ extended: true, limit: '10kb' })); // Do not accept bodies bigger than 10 kilobytes

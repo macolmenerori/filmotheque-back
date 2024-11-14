@@ -13,26 +13,32 @@ import {
   updateMovie
 } from '../controllers/moviesController';
 import { methodNotAllowed } from '../utils/methodNotAllowed';
+import {
+  addMovieToCollectionValidation,
+  requireIdQueryValidation,
+  searchTraktMovieValidation,
+  updateMovieValidation
+} from '../validations/movie.validation';
 
 const upload = multer({ dest: 'uploads/' });
 const router = express.Router();
 
 router
   .route('/searchmovie')
-  .get(protect, searchTraktMovieByTitle)
+  .get(protect, searchTraktMovieValidation, searchTraktMovieByTitle)
   .all(methodNotAllowed(['GET']));
 
 router
   .route('/movie')
   .get(protect, getAllMovies)
-  .post(protect, addMovieToCollection)
-  .patch(protect, updateMovie)
-  .delete(protect, deleteMovieFromCollection)
-  .all(methodNotAllowed(['GET', 'POST', 'PATCH', 'DELETE'])); // TODO: validation on POST body
+  .post(protect, addMovieToCollectionValidation, addMovieToCollection)
+  .patch(protect, updateMovieValidation, updateMovie)
+  .delete(protect, requireIdQueryValidation, deleteMovieFromCollection)
+  .all(methodNotAllowed(['GET', 'POST', 'PATCH', 'DELETE']));
 
 router
   .route('/fullmovie')
-  .get(protect, getFullMovie)
+  .get(protect, requireIdQueryValidation, getFullMovie)
   .all(methodNotAllowed(['GET']));
 
 router

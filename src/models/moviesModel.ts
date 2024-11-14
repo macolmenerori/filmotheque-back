@@ -45,7 +45,8 @@ const movieSchema: Schema = new mongoose.Schema({
     default: ''
   },
   meta_ids: {
-    type: Object
+    type: Object,
+    default: {}
   }
 });
 
