@@ -1,4 +1,5 @@
 import type { NextFunction, Request as RequestExpress, Response } from 'express';
+import { validationResult } from 'express-validator';
 import fs from 'fs';
 
 import Movie from '../models/moviesModel';
@@ -11,7 +12,29 @@ type Request = RequestExpress & {
   user?: UserType;
 };
 
+/**
+ * Checks if the validation has errors and sends a response if it does
+ *
+ * @param {Request} req - The request object
+ * @param {Response} res - The response object
+ */
+const checkValidation = (req: Request, res: Response) => {
+  const validationRes = validationResult(req);
+  if (!validationRes.isEmpty()) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Invalid input data',
+      errors: validationRes.array()
+    });
+  }
+};
+
 export const searchTraktMovieByTitle = catchAsync(async (req: Request, res: Response) => {
+  const validation = checkValidation(req, res);
+  if (validation !== undefined) {
+    return validation;
+  }
+
   const { title } = req.query;
 
   const traktRes = await fetch(`${process.env.TRAKT_API_URL}/search/movie?query=${title}`, {
@@ -49,11 +72,10 @@ export const searchTraktMovieByTitle = catchAsync(async (req: Request, res: Resp
 });
 
 export const addMovieToCollection = catchAsync(async (req: Request, res: Response) => {
-  // TODO: validation on POST body
-  // const validation = checkValidation(req, res);
-  // if (validation !== undefined) {
-  //   return validation;
-  // }
+  const validation = checkValidation(req, res);
+  if (validation !== undefined) {
+    return validation;
+  }
   const newMovie = await Movie.create(req.body);
 
   return res.status(201).json({
@@ -66,13 +88,12 @@ export const addMovieToCollection = catchAsync(async (req: Request, res: Respons
 });
 
 export const deleteMovieFromCollection = catchAsync(async (req: Request, res: Response) => {
-  const id = req.query.id as string;
+  const validation = checkValidation(req, res);
+  if (validation !== undefined) {
+    return validation;
+  }
 
-  // TODO: check validation
-  //   const validation = checkValidation(req, res);
-  //   if (validation !== undefined) {
-  //     return validation;
-  //   }
+  const id = req.query.id as string;
 
   if (!id) {
     return res.status(400).json({
@@ -124,11 +145,10 @@ export const getAllMovies = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const updateMovie = catchAsync(async (req: Request, res: Response) => {
-  // TODO: validation
-  //   const validation = checkValidation(req, res);
-  //   if (validation !== undefined) {
-  //     return validation;
-  //   }
+  const validation = checkValidation(req, res);
+  if (validation !== undefined) {
+    return validation;
+  }
 
   const movieId = req.body.id as string;
   delete req.body.id;
@@ -156,6 +176,11 @@ export const updateMovie = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const getFullMovie = catchAsync(async (req: Request, res: Response) => {
+  const validation = checkValidation(req, res);
+  if (validation !== undefined) {
+    return validation;
+  }
+
   const id = req.query.id as string;
 
   if (!id) {
