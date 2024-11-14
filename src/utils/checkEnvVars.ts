@@ -2,7 +2,7 @@
 
 const checkEnvVars = (): boolean => {
   const requiredEnvVars = [
-    'PROCESS_ENV',
+    'NODE_ENV',
     'PORT',
     'DATABASE',
     'AUTH_URL',
