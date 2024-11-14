@@ -1,0 +1,36 @@
+name: Build and Test
+
+on:
+  push:
+    branches: ['master']
+  pull_request:
+    branches: ['master']
+
+env:
+  NODE_ENV: ${{ vars.NODE_ENV }}
+  PORT: ${{ vars.PORT }}
+  DATABASE: ${{ secrets.DATABASE }}
+  AUTH_URL: ${{ vars.AUTH_URL }}
+  TRAKT_API_URL: ${{ vars.TRAKT_API_URL }}
+  TRAKT_CLIENT_ID: ${{ secrets.TRAKT_CLIENT_ID }}
+  TRAKT_CLIENT_SECRET: ${{ secrets.TRAKT_CLIENT_SECRET }}
+  RATELIMIT_MAXCONNECTIONS: ${{ vars.RATELIMIT_MAXCONNECTIONS }}
+  RATELIMIT_WINDOWMS: ${{ vars.RATELIMIT_WINDOWMS }}
+  CORS_WHITELIST: ${{ vars.CORS_WHITELIST }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
+      - run: |
+          yarn start &
+          sleep 10
+      - run: curl http://localhost:${{ env.PORT }}/healthcheck | grep running
