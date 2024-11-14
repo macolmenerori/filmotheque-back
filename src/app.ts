@@ -1,8 +1,10 @@
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import mongoSanitize from 'express-mongo-sanitize';
+import { rateLimit } from 'express-rate-limit';
+import helmet from 'helmet';
 
 import moviesRouter from './routes/moviesRouter';
 
@@ -30,9 +32,18 @@ app.use(cors(corsOptions));
 // Handle preflight requests for complex requests (e.g., with credentials)
 app.options('*', cors(corsOptions));
 
-// TODO: add security HTTP headers
+// Add security HTTP headers
+app.use(helmet({ contentSecurityPolicy: false }));
 
-// TODO: add rate limit
+// Rate limit. Default is 100 requests per hour
+const limiter = rateLimit({
+  max: parseInt(
+    process.env.RATELIMIT_MAXCONNECTIONS ? process.env.RATELIMIT_MAXCONNECTIONS : '100'
+  ),
+  windowMs: parseInt(process.env.RATELIMIT_WINDOWMS ? process.env.RATELIMIT_WINDOWMS : '3600000'),
+  message: 'Too many requests from this IP, please try again after an hour'
+});
+app.use('/api', limiter);
 
 // Middleware, modifies incoming data. For parsing JSON bodies on POST requests
 app.use(express.json({ limit: '1024kb' })); // Do not accept bodies bigger than 1 megabyte
@@ -58,11 +69,11 @@ app.get('/healthcheck', (req, res) => {
 app.use('/api/v1/movies', moviesRouter);
 
 // Middleware for handling unhandled routes
-// app.all('*', (req, res) => {
-//   return res.status(404).json({
-//     status: 'fail',
-//     message: `Can't find ${req.originalUrl} on this server`
-//   });
-// });
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(404).json({
+    status: 'fail',
+    message: `Can't find ${req.originalUrl} on this server`
+  });
+});
 
 export default app;
