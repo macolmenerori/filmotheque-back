@@ -12,6 +12,7 @@ export type Movie = {
   backedUp: boolean;
   backupDate: string;
   meta_ids: Record<string, string | number>;
+  poster_url: string;
 };
 
 export type MovieType = Document & Movie;

@@ -47,6 +47,10 @@ const movieSchema: Schema = new mongoose.Schema({
   meta_ids: {
     type: Object,
     default: {}
+  },
+  poster_url: {
+    type: String,
+    default: ''
   }
 });
 

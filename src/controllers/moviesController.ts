@@ -1,3 +1,4 @@
+import { load } from 'cheerio';
 import type { NextFunction, Request as RequestExpress, Response } from 'express';
 import { validationResult } from 'express-validator';
 import fs from 'fs';
@@ -76,6 +77,19 @@ export const addMovieToCollection = catchAsync(async (req: Request, res: Respons
   if (validation !== undefined) {
     return validation;
   }
+
+  // If no movie ID is provided, generate a random one
+  if (req.body.id === undefined || req.body.id === '') {
+    req.body.id = Math.random().toString(36).substring(7);
+  }
+
+  // Try to get movie poster
+  if (req.body.meta_ids && req.body.meta_ids.tmdb) {
+    req.body.poster_url = await getMoviePoster(req.body.meta_ids.tmdb);
+  } else {
+    req.body.poster_url = '';
+  }
+
   const newMovie = await Movie.create(req.body);
 
   return res.status(201).json({
@@ -317,3 +331,38 @@ export const protect = catchAsync(async (req: Request, res: Response, next: Next
   req.user = authData.data.user as UserType;
   next();
 });
+
+/**
+ * Get the movie poster from TMDb
+ *
+ * @param {string} tmdbId - TMDB ID of the movie
+ *
+ * @returns {Promise<string>} - The URL of the movie poster
+ */
+const getMoviePoster = async (tmdbId: string) => {
+  try {
+    const response = await fetch(`${process.env.TMDB_BASE_URL}/${tmdbId}`);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch the URL: ${response.status} ${response.statusText}`);
+    }
+
+    // Get the HTML text
+    const html = await response.text();
+
+    // Load the HTML into cheerio
+    const $ = load(html);
+
+    // Search for the <img> element with the specific class
+    const imgElement = $(`img.poster`).first();
+
+    // Get the 'src' attribute of the <img> element
+    const imgSrc = imgElement.attr('src');
+
+    // Return the image URL or empty string if not found
+    return imgSrc || '';
+  } catch (e) {
+    // Return empty string if an error occurs
+    return '';
+  }
+};

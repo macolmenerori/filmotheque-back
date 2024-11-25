@@ -63,6 +63,8 @@ TRAKT_API_URL=https://api.trakt.tv # Trakt API URL
 TRAKT_CLIENT_ID= # Trakt client ID, generate one in https://trakt.tv/oauth/applications/new
 TRAKT_CLIENT_SECRET= # Trakt client secret, generate one in https://trakt.tv/oauth/applications/new
 
+TMDB_BASE_URL=https://www.themoviedb.org/movie # For movie poster
+
 RATELIMIT_MAXCONNECTIONS=100 # Only allow 100 requests from the same IP
 RATELIMIT_WINDOWMS=3600000 # Those previous 100 requests must have been in 1 hour
 
