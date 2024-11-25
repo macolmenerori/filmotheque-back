@@ -32,9 +32,7 @@ export const addMovieToCollectionValidation: ValidationChain[] = [
     .isLength({ min: 1, max: 255 })
     .withMessage('User must be between 1 and 255 characters'),
   body('id')
-    .exists()
-    .withMessage('Id cannot be empty')
-    .bail()
+    .optional()
     .isString()
     .withMessage('Id must be a string')
     .bail()
