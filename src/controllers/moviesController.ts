@@ -134,15 +134,40 @@ export const deleteMovieFromCollection = catchAsync(async (req: Request, res: Re
 export const getAllMovies = catchAsync(async (req: Request, res: Response) => {
   const page = Number(req.query.page) || 1;
   const perpage = Number(req.query.perpage) || 10;
+  const sortBy = (req.query.sortBy as string) || '';
+  const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1; // default is ascending
+  const filterWatched =
+    req.query.watched === 'true' ? true : req.query.watched === 'false' ? false : undefined;
+  const filterBackedUp =
+    req.query.backedUp === 'true' ? true : req.query.backedUp === 'false' ? false : undefined;
 
-  // Calculate the number of movies to skip
-  const skip = (page - 1) * perpage;
+  if (req.user?.email === undefined) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'User not found'
+    });
+  }
 
-  // Retrieve the movies from the database of a specific user
-  const movies = await Movie.find({ user: req.user?.email }).skip(skip).limit(perpage);
+  // PAGINATION
+  const skip = (page - 1) * perpage; // Calculate the number of movies to skip
+
+  // FILTERING
+  const filter: Record<string, string | number | boolean> = { user: req.user?.email };
+  if (filterWatched !== undefined) filter.watched = filterWatched;
+  if (filterBackedUp !== undefined) filter.backedUp = filterBackedUp;
+
+  // SORTING
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sortOptions: Record<string, any> = {};
+  if (sortBy === 'year') sortOptions.year = sortOrder;
+  else if (sortBy === 'title') sortOptions.title = sortOrder;
+  else if (sortBy === 'length') sortOptions.length = sortOrder;
+
+  // QUERY DATABASR
+  const movies = await Movie.find(filter).sort(sortOptions).skip(skip).limit(perpage);
 
   // Count the total number of movies for metadata
-  const totalMovies = await Movie.countDocuments({ user: req.user?.email });
+  const totalMovies = await Movie.countDocuments(filter);
 
   return res.status(200).json({
     status: 'success',

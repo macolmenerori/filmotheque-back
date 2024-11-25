@@ -156,6 +156,37 @@ paths:
       summary: Get all movies of a user
       description: Get all movies of a user
       operationId: getMovie
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: number
+            example: 1
+        - in: query
+          name: perpage
+          schema:
+            type: number
+            example: 10
+        - in: query
+          name: sortBy
+          schema:
+            type: string
+            example: year | title | length
+        - in: query
+          name: sortOrder
+          schema:
+            type: string
+            example: asc | desc
+        - in: query
+          name: watched
+          schema:
+            type: boolean
+            example: true
+        - in: query
+          name: backedUp
+          schema:
+            type: boolean
+            example: true
       responses:
         200:
           description: Successful operation
