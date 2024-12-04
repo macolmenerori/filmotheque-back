@@ -5,7 +5,7 @@ A personal movie collection database, to keep track of the movies we own.
 ## Requirements
 
 - [opensesame project](https://github.com/macolmenerori/opensesame) set up and running (for authentication)
-- [Node JS](https://nodejs.org/en) `>=20`
+- [Node JS](https://nodejs.org/en) `>=22.11.0`
 - [yarn](https://yarnpkg.com/getting-started/install) `>=1.22`
 
 ## API Documentation
