@@ -1,5 +1,5 @@
-FROM node:20-alpine
-LABEL app="filmotheque-back" stack.binary="node" stack.version="20-alpine"
+FROM node:22-alpine
+LABEL app="filmotheque-back" stack.binary="node" stack.version="22-alpine"
 
 WORKDIR /usr/app
 
