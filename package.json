@@ -38,7 +38,7 @@
     "multer": "^2.0.1"
   },
   "devDependencies": {
-    "@types/compression": "^1.8.0",
+    "@types/compression": "^1.8.1",
     "@types/cookie-parser": "^1.4.9",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.1",
