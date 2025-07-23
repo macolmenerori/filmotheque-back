@@ -43,7 +43,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.1",
     "@types/multer": "^2.0.0",
-    "@types/node": "^24.0.14",
+    "@types/node": "^24.1.0",
     "@typescript-eslint/eslint-plugin": "^8.36.0",
     "@typescript-eslint/parser": "^8.36.0",
     "eslint": "^8.57.1",
