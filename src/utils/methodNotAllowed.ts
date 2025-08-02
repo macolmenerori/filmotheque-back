@@ -8,6 +8,7 @@ export const methodNotAllowed =
     if (!allowedMethods.includes(req.method as HTTPMethod)) {
       res.setHeader('Allow', allowedMethods.join(', '));
       res.status(405).json({ status: 'fail', message: 'Method not allowed' });
+      return;
     }
     next();
   };
