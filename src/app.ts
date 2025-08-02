@@ -1,7 +1,7 @@
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import express, { NextFunction, Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import mongoSanitize from 'express-mongo-sanitize';
 import { rateLimit } from 'express-rate-limit';
 import helmet from 'helmet';
@@ -30,7 +30,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Handle preflight requests for complex requests (e.g., with credentials)
-app.options('*', cors(corsOptions));
+app.options('/*splat', cors(corsOptions));
 
 // Add security HTTP headers
 app.use(helmet({ contentSecurityPolicy: false }));
@@ -49,12 +49,13 @@ app.use('/api', limiter);
 app.use(express.json({ limit: '1024kb' })); // Do not accept bodies bigger than 1 megabyte
 
 // Middleware, modifies incoming data. For parsing URL encoded forms
-app.use(express.urlencoded({ extended: true, limit: '10kb' })); // Do not accept bodies bigger than 10 kilobytes
+app.use(express.urlencoded({ extended: false, limit: '10kb' })); // Do not accept bodies bigger than 10 kilobytes
 
 app.use(cookieParser()); // Parse cookies
 
 // Data sanitization against NoSQL query injection
-app.use(mongoSanitize());
+// TODO: express-mongo-sanitize is incompatible with Express 5.x - needs alternative or update
+// app.use(mongoSanitize({ replaceWith: '_' }));
 
 // Compress responses
 app.use(compression());
@@ -69,7 +70,7 @@ app.get('/healthcheck', (req, res) => {
 app.use('/api/v1/movies', moviesRouter);
 
 // Middleware for handling unhandled routes
-app.use((req: Request, res: Response, next: NextFunction) => {
+app.use((req: Request, res: Response) => {
   res.status(404).json({
     status: 'fail',
     message: `Can't find ${req.originalUrl} on this server`

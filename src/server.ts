@@ -34,7 +34,11 @@ mongoose
 
 const port = process.env.PORT || 8080;
 
-const server = app.listen(port, () => {
+const server = app.listen(port, (error?: Error) => {
+  if (error) {
+    console.log('Error starting server:', error.message);
+    process.exit(1);
+  }
   console.log(`App running on port ${port}...`);
 });
 

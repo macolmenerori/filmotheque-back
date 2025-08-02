@@ -386,7 +386,7 @@ const getMoviePoster = async (tmdbId: string) => {
 
     // Return the image URL or empty string if not found
     return imgSrc || '';
-  } catch (e) {
+  } catch {
     // Return empty string if an error occurs
     return '';
   }
