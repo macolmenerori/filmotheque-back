@@ -99,7 +99,7 @@ All validated in `checkEnvVars.ts`:
 
 ## Development Notes
 
-- Node.js >= 22.11.0 required
+- Node.js >= 24.0.0 required
 - Uses yarn for package management
 - TypeScript strict mode enabled
 - ESLint configured with Airbnb + TypeScript rules

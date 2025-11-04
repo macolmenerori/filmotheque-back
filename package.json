@@ -10,7 +10,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=22.11.0"
+    "node": ">=24.0.0"
   },
   "scripts": {
     "build": "npx tsc",
