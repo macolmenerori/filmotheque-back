@@ -6,13 +6,13 @@ A personal movie collection database, to keep track of the movies we own.
 
 - [opensesame project](https://github.com/macolmenerori/opensesame) set up and running (for authentication)
 - [Node JS](https://nodejs.org/en) `>=24.0.0`
-- [yarn](https://yarnpkg.com/getting-started/install) `>=1.22`
+- [pnpm](https://pnpm.io/installation)
 
 ## API Documentation
 
 The API documentation can be found in openAPI format under `docs/openapi.yml`
 
-## How to set up and run (Docker):
+## How to set up and run (Docker)
 
 Easiest way to set up the project to use it right away.
 
@@ -47,8 +47,8 @@ For feature-testing and development.
 
 1. Set up and run [opensesame](https://github.com/macolmenerori/opensesame)
 2. Edit the file `config.env.example` with all the parameters, then rename it to `config.env`
-3. Install packages `yarn install`
-4. Run the dev environment `yarn dev`
+3. Install packages `pnpm install`
+4. Run the dev environment `pnpm dev`
 
 ## Configuration
 

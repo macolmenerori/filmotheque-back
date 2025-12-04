@@ -12,6 +12,7 @@
   "engines": {
     "node": ">=24.0.0"
   },
+  "packageManager": "pnpm@10.24.0",
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/server.js",
@@ -20,7 +21,7 @@
     "lint": "eslint --fix .",
     "types": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "verify": "yarn audit --groups dependencies && yarn lint && yarn prettify && yarn types && yarn build",
+    "verify": "pnpm audit --prod && pnpm lint && pnpm prettify && pnpm types && pnpm build",
     "gitleaks": "sh scripts/gitleaks"
   },
   "dependencies": {
