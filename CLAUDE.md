@@ -66,12 +66,12 @@ All validated in `checkEnvVars.ts`:
 
 ## Development Commands
 
-- `yarn dev` - Development server with nodemon
-- `yarn build` - TypeScript compilation to `/dist`
-- `yarn verify` - Full verification: audit + lint + prettify + types + build
-- `yarn types` - TypeScript check without emit
-- `yarn lint` - ESLint with auto-fix
-- `yarn prettify` - Prettier formatting
+- `pnpm dev` - Development server with nodemon
+- `pnpm build` - TypeScript compilation to `/dist`
+- `pnpm verify` - Full verification: audit + lint + prettify + types + build
+- `pnpm types` - TypeScript check without emit
+- `pnpm lint` - ESLint with auto-fix
+- `pnpm prettify` - Prettier formatting
 
 ## Important Implementation Details
 
@@ -100,7 +100,7 @@ All validated in `checkEnvVars.ts`:
 ## Development Notes
 
 - Node.js >= 24.0.0 required
-- Uses yarn for package management
+- Uses pnpm (v10.24.0) for package management
 - TypeScript strict mode enabled
 - ESLint configured with Airbnb + TypeScript rules
 - Prettier integration with import sorting
