@@ -1,3 +1,4 @@
+import expressMongoSanitize from '@exortek/express-mongo-sanitize';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -53,8 +54,7 @@ app.use(express.urlencoded({ extended: false, limit: '10kb' })); // Do not accep
 app.use(cookieParser()); // Parse cookies
 
 // Data sanitization against NoSQL query injection
-// TODO: express-mongo-sanitize is incompatible with Express 5.x - needs alternative or update
-// app.use(mongoSanitize({ replaceWith: '_' }));
+app.use(expressMongoSanitize({ replaceWith: '_' }));
 
 // Compress responses
 app.use(compression());

@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@exortek/express-mongo-sanitize':
+        specifier: ^1.1.1
+        version: 1.1.1
       cheerio:
         specifier: ^1.1.2
         version: 1.1.2
@@ -24,11 +27,8 @@ importers:
         specifier: ^17.2.3
         version: 17.2.3
       express:
-        specifier: ^5.2.0
+        specifier: ^5.2.1
         version: 5.2.1
-      express-mongo-sanitize:
-        specifier: ^2.2.0
-        version: 2.2.0
       express-rate-limit:
         specifier: ^8.2.1
         version: 8.2.1(express@5.2.1)
@@ -135,6 +135,9 @@ packages:
   '@eslint/js@8.57.1':
     resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  '@exortek/express-mongo-sanitize@1.1.1':
+    resolution: {integrity: sha512-IFJfkJ5fON/2JZcjTV3aT5UeTlp/DDJeQqWAbkM6nNsWd07dfG8jP1UtX0bVK0laVr2KV08eLBjxssNK9D8Dxw==}
 
   '@humanwhocodes/config-array@0.13.0':
     resolution: {integrity: sha512-DZLEEqFWQFiyK6h5YIeynKx7JlvCYWL0cImfSRXZ9l4Sg2efkFGTuFf6vzXjK1cq6IYkU+Eg/JizXw+TD2vRNw==}
@@ -874,10 +877,6 @@ packages:
   etag@1.8.1:
     resolution: {integrity: sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==}
     engines: {node: '>= 0.6'}
-
-  express-mongo-sanitize@2.2.0:
-    resolution: {integrity: sha512-PZBs5nwhD6ek9ZuP+W2xmpvcrHwXZxD5GdieX2dsjPbAbH4azOkrHbycBud2QRU+YQF1CT+pki/lZGedHgo/dQ==}
-    engines: {node: '>=10'}
 
   express-rate-limit@8.2.1:
     resolution: {integrity: sha512-PCZEIEIxqwhzw4KF0n7QF4QqruVTcF73O5kFKUnGOyjbCCgizBBiFaYpd/fnBLUMPw/BWw9OsiN7GgrNYr7j6g==}
@@ -1966,6 +1965,8 @@ snapshots:
 
   '@eslint/js@8.57.1': {}
 
+  '@exortek/express-mongo-sanitize@1.1.1': {}
+
   '@humanwhocodes/config-array@0.13.0':
     dependencies:
       '@humanwhocodes/object-schema': 2.0.3
@@ -2936,8 +2937,6 @@ snapshots:
   esutils@2.0.3: {}
 
   etag@1.8.1: {}
-
-  express-mongo-sanitize@2.2.0: {}
 
   express-rate-limit@8.2.1(express@5.2.1):
     dependencies:
