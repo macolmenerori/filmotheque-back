@@ -9,12 +9,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Architecture & Key Dependencies
 
 ### Express 5.x Considerations
-- **IMPORTANT**: Currently using Express 5.1.0 with compatibility issues
-- `express-mongo-sanitize` is commented out due to Express 5.x incompatibility (lines 57-58 in `/src/app.ts`)
 - Error handling uses `catchAsync` wrapper with explicit error logging for Express 5.x compatibility
 
 ### Core Stack
-- **Framework**: Express 5.1.0 + TypeScript
+- **Framework**: Express 5.2.1 + TypeScript
 - **Database**: MongoDB with Mongoose 8.x
 - **Authentication**: External via opensesame service (Bearer tokens + cookies)
 - **Validation**: express-validator with custom validation chains
@@ -84,7 +82,7 @@ All validated in `checkEnvVars.ts`:
 - CORS whitelist validation
 - Rate limiting (default: 100 requests/hour per IP)
 - Request size limits (1MB JSON, 10KB URL-encoded)
-- NoSQL injection protection (currently disabled due to Express 5.x)
+- NoSQL injection protection via @exortek/express-mongo-sanitize
 - Helmet security headers (CSP disabled)
 
 ### Database Patterns
