@@ -1,4 +1,4 @@
-import { Document, Schema } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 
 export type Movie = {
   user: string;
@@ -15,9 +15,7 @@ export type Movie = {
   poster_url: string;
 };
 
-export type MovieType = Document & Movie;
-
-export type UserSchemaType = MovieType & Schema;
+export type MovieType = HydratedDocument<Movie>;
 
 export type TraktMovie = {
   title: string;
