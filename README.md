@@ -12,6 +12,38 @@ A personal movie collection database, to keep track of the movies we own.
 
 The API documentation can be found in openAPI format under `docs/openapi.yml`
 
+## How to set up and run (Demo)
+
+A Docker Compose setup is included to run the **full stack** (MongoDB + auth service + backend + frontend) with a single command, pre-loaded with sample data.
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/macolmenerori/filmotheque-back.git
+   cd filmotheque-back/docker
+   ```
+
+2. Build and start all services:
+
+   ```bash
+   docker compose up --build
+   ```
+
+3. Open `http://localhost` and log in with:
+   - **Email:** `admin@admin.com`
+   - **Password:** `administrator`
+
+The compose stack includes:
+
+| Service             | Port  | Description                   |
+| ------------------- | ----- | ----------------------------- |
+| `filmotheque-db`    | 27017 | MongoDB with seeded demo data |
+| `opensesame-back`   | 8080  | Authentication API            |
+| `filmotheque-back`  | 8082  | Filmotheque API               |
+| `filmotheque-front` | 80    | Frontend (Nginx)              |
+
+> Sample movies are pre-loaded. To reset the data, run `docker compose down` and start again.
+
 ## How to set up and run (Docker)
 
 Easiest way to set up the project to use it right away.
@@ -26,14 +58,14 @@ git clone https://github.com/macolmenerori/opensesame
 docker-compose up -d
 ```
 
-2. Edit the file `config.env.example` with all the parameters, then rename it to `config.env`
-3. Generate the Docker image
+1. Edit the file `config.env.example` with all the parameters, then rename it to `config.env`
+2. Generate the Docker image
 
 ```
 docker build -t filmotheque-back:latest .
 ```
 
-4. Run the Docker image
+1. Run the Docker image
 
 ```
 docker run -p 8081:8081 --name filmotheque-back filmotheque-back

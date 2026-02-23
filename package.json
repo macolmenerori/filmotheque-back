@@ -12,7 +12,7 @@
   "engines": {
     "node": ">=24.0.0"
   },
-  "packageManager": "pnpm@10.26.2",
+  "packageManager": "pnpm@10.30.1",
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/server.js",
@@ -61,5 +61,11 @@
     "prettier": "^3.8.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "qs": "6.14.2",
+      "lodash": "4.17.23"
+    }
   }
 }
