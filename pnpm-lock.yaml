@@ -13,8 +13,8 @@ importers:
   .:
     dependencies:
       '@exortek/express-mongo-sanitize':
-        specifier: ^2.0.1
-        version: 2.0.1(express@5.2.1)
+        specifier: ^2.0.2
+        version: 2.0.2(express@5.2.1)
       cheerio:
         specifier: ^1.2.0
         version: 1.2.0
@@ -146,8 +146,8 @@ packages:
     resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@exortek/express-mongo-sanitize@2.0.1':
-    resolution: {integrity: sha512-pbHrSrJTlXFhuxHpiWiMeAxfn3I7RvyS/K8hhj91LU3TiXZn3nH/sj9yRckfRuyv7/nxgKzzUmZ5ZLPgXLEy9w==}
+  '@exortek/express-mongo-sanitize@2.0.2':
+    resolution: {integrity: sha512-BjLTzOqd65DoaZuLCHEje3EPpT0HNwvsGzbWTXRt6EqoLfUGvIyD3698Z+ZwrLkw0WZhBTuQxZCO3iqjfA+Fiw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       express: '>=4.0.0'
@@ -1998,7 +1998,7 @@ snapshots:
 
   '@eslint/js@8.57.1': {}
 
-  '@exortek/express-mongo-sanitize@2.0.1(express@5.2.1)':
+  '@exortek/express-mongo-sanitize@2.0.2(express@5.2.1)':
     dependencies:
       '@exortek/nosql-sanitize-core': 2.0.1
       express: 5.2.1
