@@ -22,7 +22,7 @@
     "types": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1",
     "verify": "pnpm audit --prod && pnpm lint && pnpm prettify && pnpm types && pnpm build",
-    "gitleaks": "sh scripts/gitleaks"
+    "gitleaks": "sh scripts/gitleaks.sh"
   },
   "dependencies": {
     "@exortek/express-mongo-sanitize": "^2.0.2",
