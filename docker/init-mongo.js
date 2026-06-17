@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 // SET UP MONGODB
 // Switch to mongoDB admin database
 db = db.getSiblingDB('admin');
