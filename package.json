@@ -1,6 +1,6 @@
 {
   "name": "filmotheque-back",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "Movie library",
   "main": "app.js",
   "author": "macolmenerori",
@@ -12,7 +12,7 @@
   "engines": {
     "node": ">=24.0.0"
   },
-  "packageManager": "pnpm@11.7.0",
+  "packageManager": "pnpm@11.21.0",
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/server.js",
